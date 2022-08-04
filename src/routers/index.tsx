@@ -6,6 +6,8 @@ import {ExtraNavigation, OrdinaryNavigation, TabNavigator} from './routeConfig';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import {navigationRef} from './navigation';
+import {useSelector} from 'react-redux';
+import {GlobeStore} from '@stores/index';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,6 +29,7 @@ const BottomTabNavigator: React.FC<any> = React.memo(props => {
     </BottomTab.Navigator>
   );
 });
+
 /** normal route and need authority */
 const OrdinaryNavigator: React.FC<unknown> = () => {
   if (TabNavigator.length === 0 && OrdinaryNavigation.length === 0) return null;
@@ -69,11 +72,12 @@ const ExtraNavigator: React.FC<unknown> = () => {
 };
 
 const ApplicationsRoute: React.FC<any> = () => {
+  const islogin = useSelector((state: GlobeStore) => state.user.isLogin);
   return (
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef}>
         <SafeAreaView style={{flex: 1}}>
-          <OrdinaryNavigator />
+          {islogin ? <OrdinaryNavigator /> : <ExtraNavigator />}
         </SafeAreaView>
       </NavigationContainer>
     </SafeAreaProvider>
