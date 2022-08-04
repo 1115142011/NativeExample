@@ -18,7 +18,9 @@
       "@components/*": ["src/components/*"],
       "@stores/*": ["src/stores/*"],
       "@assets/*": ["src/assets/*"],
-      "@api/*": ["src/api/*"]
+      "@api/*": ["src/api/*"],
+      "@routers/*": ["src/routers/*"]
+
 
     }
   },

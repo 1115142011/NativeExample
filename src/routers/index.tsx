@@ -2,17 +2,17 @@ import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  ExtraNavigation,
-  OrdinaryNavigation,
-  TabNavigator,
-} from './routeConfig111';
+import {ExtraNavigation, OrdinaryNavigation, TabNavigator} from './routeConfig';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {NavigationContainer} from '@react-navigation/native';
+import {navigationRef} from './navigation';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 /** tab navigator default pathname `/home` */
 const BottomTabNavigator: React.FC<any> = React.memo(props => {
+  if (TabNavigator.length === 0) return null;
   return (
     <BottomTab.Navigator>
       {TabNavigator.map(v => {
@@ -27,8 +27,9 @@ const BottomTabNavigator: React.FC<any> = React.memo(props => {
     </BottomTab.Navigator>
   );
 });
-
-const OrdinaryNavigator: React.FC<unknown> = props => {
+/** normal route and need authority */
+const OrdinaryNavigator: React.FC<unknown> = () => {
+  if (TabNavigator.length === 0 && OrdinaryNavigation.length === 0) return null;
   return (
     <Stack.Navigator initialRouteName="/home">
       {OrdinaryNavigation.map(v => {
@@ -40,14 +41,18 @@ const OrdinaryNavigator: React.FC<unknown> = props => {
           </Stack.Screen>
         );
       })}
-      {/* <Stack.Screen name={'/home'}>
-        {props => <BottomTabNavigator {...props} />}
-      </Stack.Screen> */}
+      {Boolean(TabNavigator.length) && (
+        <Stack.Screen name={'/home'}>
+          {props => <BottomTabNavigator {...props} />}
+        </Stack.Screen>
+      )}
     </Stack.Navigator>
   );
 };
 
-const ExtraNavigator: React.FC<unknown> = props => {
+/** not authority */
+const ExtraNavigator: React.FC<unknown> = () => {
+  if (ExtraNavigation.length === 0) return null;
   return (
     <Stack.Navigator initialRouteName="/home">
       {ExtraNavigation.map(v => {
@@ -65,9 +70,13 @@ const ExtraNavigator: React.FC<unknown> = props => {
 
 const ApplicationsRoute: React.FC<any> = () => {
   return (
-    <React.Fragment>
-      <OrdinaryNavigator />
-    </React.Fragment>
+    <SafeAreaProvider>
+      <NavigationContainer ref={navigationRef}>
+        <SafeAreaView style={{flex: 1}}>
+          <OrdinaryNavigator />
+        </SafeAreaView>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
