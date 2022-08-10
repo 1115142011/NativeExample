@@ -19,8 +19,10 @@
       "@stores/*": ["src/stores/*"],
       "@assets/*": ["src/assets/*"],
       "@api/*": ["src/api/*"],
-      "@routers/*": ["src/routers/*"]
+      "@routers/*": ["src/routers/*"],
+      "@commonStyle/*": ["src/commonStyle/*"]
 
+      
 
     }
   },

@@ -14,6 +14,9 @@ module.exports = {
           '@assets': './src/assets',
           '@api': 'src/api',
           '@routers': './src/routers',
+          '@commonStyle': './src/commonStyle',
+
+          
         },
       },
     ],
