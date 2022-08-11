@@ -61,3 +61,4 @@ buck-out/
 /vendor/bundle/
 .vscode/settings.json
 yarn.lock
+NativeExample.code-workspace

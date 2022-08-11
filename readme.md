@@ -10,3 +10,5 @@
 3. 在安装路由库时 想要路由依赖正确加载到项目必须执行该命令 npx pod-install ios (ps 需要有稳定的梯子)
 4. Animate 使用本机驱动的动画支持的样式属性有限 ，在设计动画的时候要考虑实现方式
 5. 想要获取元素 尺寸及位置信息时可也利用 `onLauout` 事件从事件对象中获取
+6. 在 macOS M1 上配置安卓开发环境时遇到了模拟器 sdk 下载不了的问题，可以先不管，在创建模拟器时再下载 ,
+7. 在构建 Android 时一直卡在 `Starting a Gradle Daemon ...` 这一步，实际上上再下载 Android 构建相关的 Gradle Sdk ，在 Android Studio 中打开 项目的 Android 文件夹 ，等待项目相关的 sdk 下载完成后 再运行 `yarn android`
