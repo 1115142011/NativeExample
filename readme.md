@@ -12,3 +12,14 @@
 5. 想要获取元素 尺寸及位置信息时可也利用 `onLauout` 事件从事件对象中获取
 6. 在 macOS M1 上配置安卓开发环境时遇到了模拟器 sdk 下载不了的问题，可以先不管，在创建模拟器时再下载 ,
 7. 在构建 Android 时一直卡在 `Starting a Gradle Daemon ...` 这一步，实际上上再下载 Android 构建相关的 Gradle Sdk ，在 Android Studio 中打开 项目的 Android 文件夹 ，等待项目相关的 sdk 下载完成后 再运行 `yarn android`
+8. 在 react-native 嵌套的 Touch 系列组件 如果子组件设置了 触摸事件的处理函数，那么，该事件不会冒泡到父级，原则上每个手势事件只能有一个响应者 （官方 issues:https://github.com/facebook/react-native/issues/6796）
+
+```tsx
+TouchableHighlight onLongPress={this._onLongPress}>
+     <TouchableHighlight onPress={this._onPress}>
+           <Text>
+               Press or LongPress me
+           </Text>
+     </TouchableHighlight>
+</TouchableHighlight>
+```

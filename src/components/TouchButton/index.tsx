@@ -4,7 +4,6 @@ import {
   GestureResponderEvent,
   Text,
   TextStyle,
-  TouchableHighlight,
   TouchableOpacity,
   View,
   ViewStyle,

@@ -106,6 +106,7 @@ const Tab: React.FC<TabProps> = props => {
               onPress={() => changeActiveTab(v.key, index)}
               textStyle={{
                 ...textStyle,
+
                 color: activeKey === v.key ? color : textStyle.color || '#666',
               }}
               boxStyle={{
@@ -131,11 +132,10 @@ const Tab: React.FC<TabProps> = props => {
           <Animated.View style={{width: widthGrow}} />
           <View
             style={{
-              paddingHorizontal: 16,
-              width: 100 / tabList.length + '100%',
-              backgroundColor: color,
+              paddingHorizontal: 8,
+              width: Math.floor(100 / tabList.length) + '%',
             }}>
-            <View style={{height: 2}} />
+            <View style={{height: 3, backgroundColor: color}} />
           </View>
         </View>
       )}
