@@ -2,6 +2,7 @@
   "name": "NativeExample",
   "version": "0.0.1",
   "private": true,
+  "description": "react-native 示例项目,react-native 项目搭建模板 rn 示例,rn 项目模版; rn-example react-native-example",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
