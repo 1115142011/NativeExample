@@ -30,11 +30,10 @@ const Input = forwardRef((props: InputProps, ref) => {
     height: 40,
     borderColor: isFocused ? '#E77075' : '#d9d9d9',
     borderWidth: 2,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingHorizontal:4,
+    paddingVertical: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 0,
   };
   let styles: ViewStyle = {...defaultStyle};
   if (Array.isArray(style)) {

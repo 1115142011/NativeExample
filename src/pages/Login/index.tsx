@@ -1,6 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
+  Alert,
+  KeyboardAvoidingView,
   NativeSyntheticEvent,
+  Platform,
   Text,
   TextInput,
   TextInputChangeEventData,
@@ -11,6 +14,7 @@ import TouchAbleText from '@components/TouchAbleText';
 import Input from '@components/Input';
 import TouchButton from '@components/TouchButton';
 import commonStyle from '@commonStyle/index';
+import Radio from '@components/Radio';
 
 const testList = [
   {tab: '手机号登录', key: 'mobile'},
@@ -21,15 +25,17 @@ type InputValType = {
   account: string | undefined;
   securityCode: string | undefined;
   password: string | undefined;
+  isAgree: boolean;
 };
 const LoginComponent: React.FC<any> = props => {
   const [tabValue, setTabValue] = useState<'mobile' | 'account'>('mobile');
   const codeInputRef = useRef<TextInput>();
-  const TimerRef = useRef<number>();
+  const TimerRef = useRef<any>();
   const [inputVal, setInputVal] = useState<InputValType>({
     account: undefined,
     securityCode: undefined,
     password: undefined,
+    isAgree: true,
   });
 
   const [restTime, setRestTime] = useState<number>(60);
@@ -41,6 +47,7 @@ const LoginComponent: React.FC<any> = props => {
       account: undefined,
       securityCode: undefined,
       password: undefined,
+      isAgree: true,
     }));
     TimerRef.current && clearTimeout(TimerRef.current);
     setRestTime(60);
@@ -83,6 +90,41 @@ const LoginComponent: React.FC<any> = props => {
     calculateTimeInterval();
   };
 
+  /** 跳转找回密码 */
+  const toFindPassword = () => {};
+
+  /** 是否同意协议变更 */
+  const agreementStatusChange = () => {
+    setInputVal(prev => {
+      return {
+        ...prev,
+        isAgree: !prev.isAgree,
+      };
+    });
+  };
+
+  /** 登录 */
+  const loginIn = () => {
+    const {isAgree, account, password, securityCode} = inputVal;
+    if (!isAgree) {
+      Alert.alert('提示', '请阅读', [
+        {
+          text: 'Ask me later',
+          onPress: () => console.log('Ask me later pressed'),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+    if (tabValue === 'mobile') {
+    } else {
+    }
+  };
+
   useEffect(() => {
     return () => {
       TimerRef.current && clearTimeout(TimerRef.current);
@@ -90,7 +132,8 @@ const LoginComponent: React.FC<any> = props => {
   }, []);
 
   return (
-    <View
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       style={{
         padding: 8,
         flex: 1,
@@ -165,7 +208,7 @@ const LoginComponent: React.FC<any> = props => {
                 maxLength={6}
                 style={{height: 55}}
                 textStyle={{fontSize: 18}}
-                placeholder="请输入验证码"
+                placeholder="请输入密码"
                 extra={
                   <View style={[commonStyle.flexRowCenter]}>
                     <View
@@ -177,10 +220,7 @@ const LoginComponent: React.FC<any> = props => {
                       }}
                     />
                     <TouchAbleText
-                      onPress={getSecurityCode}
-                      disabled={
-                        restTime < 60 || inputVal.account?.length !== 11
-                      }
+                      onPress={toFindPassword}
                       textStyle={{
                         width: 80,
                         color: '#e77075',
@@ -195,6 +235,7 @@ const LoginComponent: React.FC<any> = props => {
         </View>
         <View style={{paddingTop: 48}}>
           <TouchButton
+            onPress={loginIn}
             boxStyle={{
               height: 49,
               backgroundColor: '#E77075',
@@ -216,8 +257,10 @@ const LoginComponent: React.FC<any> = props => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
+          paddingVertical: 16,
         }}>
-        <Text style={{color: '#999'}}>我已阅读并同意</Text>
+        <Radio checked={inputVal.isAgree} onChange={agreementStatusChange} />
+        <Text style={{color: '#999', marginLeft: 8}}>我已阅读并同意</Text>
         <TouchAbleText>
           <Text style={{color: '#333'}}>《用户协议》</Text>
         </TouchAbleText>
@@ -226,7 +269,7 @@ const LoginComponent: React.FC<any> = props => {
           <Text style={{color: '#333'}}>《隐私政策》</Text>
         </TouchAbleText>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

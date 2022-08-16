@@ -15,11 +15,26 @@
 8. 在 react-native 嵌套的 Touch 系列组件 如果子组件设置了 触摸事件的处理函数，那么，该事件不会冒泡到父级，原则上每个手势事件只能有一个响应者 （官方 issues:https://github.com/facebook/react-native/issues/6796）
 
 ```tsx
-TouchableHighlight onLongPress={this._onLongPress}>
-     <TouchableHighlight onPress={this._onPress}>
-           <Text>
-               Press or LongPress me
-           </Text>
-     </TouchableHighlight>
+<TouchableHighlight onLongPress={this._onLongPress}>
+  <TouchableHighlight onPress={this._onPress}>
+    <Text>Press or LongPress me</Text>
+  </TouchableHighlight>
 </TouchableHighlight>
 ```
+
+9. 键盘遮挡物问题可以用 `KeyboardAvoidingView` 组件解决
+
+   ```tsx
+       <KeyboardAvoidingView
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={{
+        padding: 8,
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+     }}>
+   <View>{....}</View>
+   </KeyboardAvoidingView>
+
+   ```
+10. react-native 中图片仅支持有限格式的几种图片 `png、jpg、jpeg、bmp、gif、webp`
