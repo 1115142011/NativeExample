@@ -2,6 +2,7 @@ import React from 'react';
 import Details from '@pages/Details';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
+import Register from '@pages/Register';
 
 type ScreenOptions = {
   title?: string;
@@ -43,5 +44,10 @@ export const ExtraNavigation: RouteItem[] = [
     name: '/login',
     options: {headerShown: false},
     component: Login,
+  },
+  {
+    name: '/register',
+    options: {headerShown: false},
+    component: Register,
   },
 ];

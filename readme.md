@@ -37,4 +37,39 @@
    </KeyboardAvoidingView>
 
    ```
+
 10. react-native 中图片仅支持有限格式的几种图片 `png、jpg、jpeg、bmp、gif、webp`
+
+11. 要实现类似密码框的效果需要设置 `secureTextEntry={true}`
+
+```tsx
+<Input
+  secureTextEntry={true}
+  textContentType="password"
+  value={inputVal.password}
+  onChange={(e: any) => onAccountChange('password', e)}
+  style={{height: 55}}
+  textStyle={{fontSize: 18}}
+  placeholder="请输入密码"
+  extra={
+    <View style={[commonStyle.flexRowCenter]}>
+      <View
+        style={{
+          borderWidth: 1,
+          height: 18,
+          marginRight: 8,
+          borderColor: '#d9d9d9',
+        }}
+      />
+      <TouchAbleText
+        onPress={toFindPassword}
+        textStyle={{
+          width: 80,
+          color: '#e77075',
+        }}>
+        忘记密码
+      </TouchAbleText>
+    </View>
+  }
+/>
+```

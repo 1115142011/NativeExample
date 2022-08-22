@@ -90,8 +90,11 @@ const LoginComponent: React.FC<any> = props => {
     calculateTimeInterval();
   };
 
-  /** 跳转找回密码 */
-  const toFindPassword = () => {};
+  /** 页面切换 */
+  const changeRoute = (path: string) => {
+    const {navigation} = props;
+    navigation.push(path);
+  };
 
   /** 是否同意协议变更 */
   const agreementStatusChange = () => {
@@ -107,21 +110,14 @@ const LoginComponent: React.FC<any> = props => {
   const loginIn = () => {
     const {isAgree, account, password, securityCode} = inputVal;
     if (!isAgree) {
-      Alert.alert('提示', '请阅读', [
-        {
-          text: 'Ask me later',
-          onPress: () => console.log('Ask me later pressed'),
-        },
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+      Alert.alert('提示', '请阅读并同意用户协议和隐私政策', [{text: '确定'}]);
+      return;
     }
+    const param = {account, password, securityCode};
     if (tabValue === 'mobile') {
+      // @todo mobile api
     } else {
+      // account api
     }
   };
 
@@ -203,9 +199,10 @@ const LoginComponent: React.FC<any> = props => {
           {tabValue === 'account' && (
             <View style={{marginTop: 24}}>
               <Input
-                value={inputVal.securityCode}
-                onChange={(e: any) => onAccountChange('securityCode', e)}
-                maxLength={6}
+                secureTextEntry={true}
+                textContentType="password"
+                value={inputVal.password}
+                onChange={(e: any) => onAccountChange('password', e)}
                 style={{height: 55}}
                 textStyle={{fontSize: 18}}
                 placeholder="请输入密码"
@@ -220,7 +217,7 @@ const LoginComponent: React.FC<any> = props => {
                       }}
                     />
                     <TouchAbleText
-                      onPress={toFindPassword}
+                      onPress={() => changeRoute('/register')}
                       textStyle={{
                         width: 80,
                         color: '#e77075',
@@ -247,6 +244,7 @@ const LoginComponent: React.FC<any> = props => {
         </View>
         <View style={{paddingTop: 18}}>
           <TouchAbleText
+            onPress={() => changeRoute('/register')}
             textStyle={{color: '#333', textAlign: 'center', fontSize: 18}}>
             新用户注册
           </TouchAbleText>
