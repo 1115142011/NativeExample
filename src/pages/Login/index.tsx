@@ -54,7 +54,7 @@ const LoginComponent: React.FC<any> = props => {
     setTabValue(val as 'mobile' | 'account');
   };
 
-  /** account input change  */
+  /**  input change  */
   const onAccountChange = (
     key: keyof InputValType,
     e: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -87,13 +87,14 @@ const LoginComponent: React.FC<any> = props => {
     setRestTime(prev => prev - 1);
     codeInputRef.current?.focus();
     /** @todo service api */
+
     calculateTimeInterval();
   };
 
   /** 页面切换 */
   const changeRoute = (path: string) => {
     const {navigation} = props;
-    navigation.push(path);
+    navigation.navigate(path);
   };
 
   /** 是否同意协议变更 */
@@ -217,7 +218,7 @@ const LoginComponent: React.FC<any> = props => {
                       }}
                     />
                     <TouchAbleText
-                      onPress={() => changeRoute('/register')}
+                      onPress={() => changeRoute('/retrieve-password')}
                       textStyle={{
                         width: 80,
                         color: '#e77075',
@@ -259,11 +260,11 @@ const LoginComponent: React.FC<any> = props => {
         }}>
         <Radio checked={inputVal.isAgree} onChange={agreementStatusChange} />
         <Text style={{color: '#999', marginLeft: 8}}>我已阅读并同意</Text>
-        <TouchAbleText>
+        <TouchAbleText onPress={() => changeRoute('/user-agreement')}>
           <Text style={{color: '#333'}}>《用户协议》</Text>
         </TouchAbleText>
         <Text style={{color: '#333'}}>和</Text>
-        <TouchAbleText>
+        <TouchAbleText onPress={() => changeRoute('/privacy-policy')}>
           <Text style={{color: '#333'}}>《隐私政策》</Text>
         </TouchAbleText>
       </View>

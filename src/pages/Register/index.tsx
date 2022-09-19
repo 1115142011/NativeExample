@@ -10,17 +10,11 @@ import {
   TextInputChangeEventData,
   View,
 } from 'react-native';
-import Tab from '@components/Tab';
 import TouchAbleText from '@components/TouchAbleText';
 import Input from '@components/Input';
 import TouchButton from '@components/TouchButton';
 import commonStyle from '@commonStyle/index';
 import Radio from '@components/Radio';
-
-const testList = [
-  {tab: '手机号登录', key: 'mobile'},
-  {tab: '账号密码登录', key: 'account'},
-];
 
 type InputValType = {
   account?: string;
@@ -36,13 +30,19 @@ const RegisterComponent: React.FC<any> = props => {
   const [inputVal, setInputVal] = useState<InputValType>({
     account: undefined,
     securityCode: undefined,
+    mobile: undefined,
     password: undefined,
+    aginPassword: undefined,
     isAgree: true,
   });
+  const [passwordHide, setPasswordHide] = useState<{
+    first: boolean;
+    agin: boolean;
+  }>({first: true, agin: true});
 
   const [restTime, setRestTime] = useState<number>(60);
 
-  /** account input change  */
+  /**  input change  */
   const onAccountChange = (
     key: keyof InputValType,
     e: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -78,8 +78,15 @@ const RegisterComponent: React.FC<any> = props => {
     calculateTimeInterval();
   };
 
-  /** 跳转找回密码 */
-  const toFindPassword = () => {};
+  /**密码 可见性切换 */
+  const triggerPasswordVisible = (key: 'first' | 'agin') => {
+    setPasswordHide(prev => {
+      return {
+        ...prev,
+        [key]: !prev[key],
+      };
+    });
+  };
 
   /** 是否同意协议变更 */
   const agreementStatusChange = () => {
@@ -90,19 +97,18 @@ const RegisterComponent: React.FC<any> = props => {
       };
     });
   };
+    /** 页面切换 */
+    const changeRoute = (path: string) => {
+      const {navigation} = props;
+      navigation.navigate(path);
+    };
 
-  /** 登录 */
+  /** 注册 */
   const loginIn = () => {
     const {isAgree, account, password, securityCode} = inputVal;
     if (!isAgree) {
       Alert.alert('提示', '请阅读并同意用户协议和隐私政策', [{text: '确定'}]);
       return;
-    }
-    const param = {account, password, securityCode};
-    if (tabValue === 'mobile') {
-      // @todo mobile api
-    } else {
-      // account api
     }
   };
 
@@ -184,7 +190,7 @@ const RegisterComponent: React.FC<any> = props => {
 
           <View style={{marginTop: 16}}>
             <Input
-              secureTextEntry={true}
+              secureTextEntry={passwordHide.first}
               textContentType="password"
               value={inputVal.password}
               onChange={(e: any) => onAccountChange('password', e)}
@@ -192,30 +198,26 @@ const RegisterComponent: React.FC<any> = props => {
               textStyle={{fontSize: 18}}
               placeholder="请输入密码"
               extra={
-                <View style={[commonStyle.flexRowCenter]}>
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      height: 18,
-                      marginRight: 8,
-                      borderColor: '#d9d9d9',
-                    }}
+                <TouchAbleText
+                  onPress={() => triggerPasswordVisible('first')}
+                  textStyle={{
+                    ...commonStyle.cntentCenter,
+                    paddingHorizontal: 8,
+                  }}>
+                  <Image
+                    source={
+                      passwordHide.first
+                        ? require('@assets/eyes/eye_open.png')
+                        : require('@assets/eyes/eye_close.png')
+                    }
                   />
-                  <TouchAbleText
-                    onPress={toFindPassword}
-                    textStyle={{
-                      width: 80,
-                      color: '#e77075',
-                    }}>
-                    <Image source={require('@assets/eyes/eye_close.png')} />
-                  </TouchAbleText>
-                </View>
+                </TouchAbleText>
               }
             />
           </View>
           <View style={{marginTop: 16}}>
             <Input
-              secureTextEntry={true}
+              secureTextEntry={passwordHide.agin}
               textContentType="password"
               value={inputVal.aginPassword}
               onChange={(e: any) => onAccountChange('aginPassword', e)}
@@ -223,24 +225,20 @@ const RegisterComponent: React.FC<any> = props => {
               textStyle={{fontSize: 18}}
               placeholder="请再次输入密码"
               extra={
-                <View style={[commonStyle.flexRowCenter]}>
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      height: 18,
-                      marginRight: 8,
-                      borderColor: '#d9d9d9',
-                    }}
+                <TouchAbleText
+                  onPress={() => triggerPasswordVisible('agin')}
+                  textStyle={{
+                    ...commonStyle.cntentCenter,
+                    paddingHorizontal: 8,
+                  }}>
+                  <Image
+                    source={
+                      passwordHide.agin
+                        ? require('@assets/eyes/eye_open.png')
+                        : require('@assets/eyes/eye_close.png')
+                    }
                   />
-                  <TouchAbleText
-                    onPress={toFindPassword}
-                    textStyle={{
-                      width: 80,
-                      color: '#e77075',
-                    }}>
-                    <Image source={require('@assets/eyes/eye_close.png')} />
-                  </TouchAbleText>
-                </View>
+                </TouchAbleText>
               }
             />
           </View>
@@ -267,11 +265,11 @@ const RegisterComponent: React.FC<any> = props => {
         }}>
         <Radio checked={inputVal.isAgree} onChange={agreementStatusChange} />
         <Text style={{color: '#999', marginLeft: 8}}>我已阅读并同意</Text>
-        <TouchAbleText>
+        <TouchAbleText onPress={() => changeRoute('/user-agreement')}>
           <Text style={{color: '#333'}}>《用户协议》</Text>
         </TouchAbleText>
         <Text style={{color: '#333'}}>和</Text>
-        <TouchAbleText>
+        <TouchAbleText onPress={() => changeRoute('/privacy-policy')}>
           <Text style={{color: '#333'}}>《隐私政策》</Text>
         </TouchAbleText>
       </View>

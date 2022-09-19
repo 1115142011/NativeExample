@@ -3,6 +3,9 @@ import Details from '@pages/Details';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import Register from '@pages/Register';
+import UserAgreement from '@pages/UserAgreement';
+import PrivacyPolicy from '@pages/PrivacyPolicy';
+import RetrievePassword from '@pages/RetrievePassword';
 
 type ScreenOptions = {
   title?: string;
@@ -11,6 +14,7 @@ type ScreenOptions = {
   headerShown?: boolean;
   headerShadowVisible?: boolean;
   headerTransparent?: boolean;
+  headerBackTitle?: string;
 };
 
 type RouteItem = {
@@ -47,7 +51,22 @@ export const ExtraNavigation: RouteItem[] = [
   },
   {
     name: '/register',
-    options: {headerShown: false},
+    options: {title: '账户注册', headerBackTitle: '返回'},
     component: Register,
+  },
+  {
+    name: '/user-agreement',
+    options: {title: '用户协议', headerBackTitle: '返回'},
+    component: UserAgreement,
+  },
+  {
+    name: '/privacy-policy',
+    options: {title: '隐私政策', headerBackTitle: '返回'},
+    component: PrivacyPolicy,
+  },
+  {
+    name: '/retrieve-password',
+    options: {title: '密码找回', headerBackTitle: '返回'},
+    component: RetrievePassword,
   },
 ];
